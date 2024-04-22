@@ -1,6 +1,7 @@
 package com.estefiturin.appgolosinas.models.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,7 @@ public class DetallePedido {
     @JoinColumn(name = "pedido_id", referencedColumnName = "id")
     private Pedido pedido;
 
-
+    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "detalle_pedido_id")
     private List<Golosina> golosinas;

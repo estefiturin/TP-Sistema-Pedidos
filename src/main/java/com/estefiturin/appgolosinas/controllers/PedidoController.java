@@ -72,6 +72,16 @@ public class PedidoController {
         // Asignar el ID de pedido
         pedido.setId(pedidoId);
 
+        Integer cantidad = (Integer) requestBody.get("cantidad");
+        Double precioUnitario = (Double) requestBody.get("precioUnitario");
+        // Obtener y establecer el detalle del pedido del requestBody
+        DetallePedido detallePedido = new DetallePedido();
+        detallePedido.setCantidad(cantidad);
+        detallePedido.setPrecioUnitario(precioUnitario);
+        Double montoTotal = cantidad * precioUnitario;
+        pedido.setDetalle(detallePedido);
+
+
         // Guardar el pedido en la base de datos
         Pedido pedidoGuardado = pedidoService.save(pedido);
 
@@ -79,6 +89,7 @@ public class PedidoController {
         Map<String, Object> response = new HashMap<>();
         response.put("id", pedidoGuardado.getId());
         response.put("estado", pedidoGuardado.getEstado());
+        response.put("montoTotal", montoTotal);
         response.put("mensaje", "Pedido creado exitosamente");
 
 

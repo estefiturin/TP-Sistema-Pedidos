@@ -1,5 +1,6 @@
 package com.estefiturin.appgolosinas.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class Cliente {
     @Enumerated(EnumType.STRING)
     private EstadoPedido estado = EstadoPedido.PENDING;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos;
 

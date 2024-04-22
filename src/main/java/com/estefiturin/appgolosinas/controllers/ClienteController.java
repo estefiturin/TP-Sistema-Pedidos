@@ -35,20 +35,23 @@ public class ClienteController {
 
     @GetMapping
     public List<Cliente> list() {
+        List<Cliente> clientesConPedidos = new ArrayList<>();
+
+        // Obtener todos los clientes
         List<Cliente> clientes = clienteService.findAll();
+
+        // Iterar sobre cada cliente
         for (Cliente cliente : clientes) {
-
-
-            cliente.setPedidos(null);
-            /*List<Pedido> pedidos = pedidoService.findByClienteId(cliente.getId());
-            for (Pedido pedido : pedidos) {
-                DetallePedido detallePedido = detallePedidoService.findByPedidoId(pedido.getId());
-                pedido.setDetalle(detallePedido);
+            // Verificar si el cliente tiene pedidos asociados
+            if (!cliente.getPedidos().isEmpty()) {
+                // Agregar el cliente a la lista de clientes con pedidos
+                clientesConPedidos.add(cliente);
             }
-            cliente.setPedidos(pedidos);*/
         }
-        return clientes;
+
+        return clientesConPedidos;
     }
+
 
 
     @GetMapping("/{id}")
