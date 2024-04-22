@@ -78,4 +78,9 @@ public class PedidoService {
             throw new NoSuchElementException("No se encontró ningún pedido con el ID proporcionado: " + pedidoId);
         }
     }
+
+    public List<Pedido> findAllWithDetalle() {
+        return pedidoRepository.findAllWithDetalle();
+    }
+
 }

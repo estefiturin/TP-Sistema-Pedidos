@@ -24,14 +24,15 @@ public class PedidoController {
     }
 
     @GetMapping("/verPedidos")
-    public ResponseEntity<List<Pedido>> obtenerTodosLosPedidos() {
-        List<Pedido> pedidos = pedidoService.findAll();
+    public ResponseEntity<List<Pedido>> verPedidos() {
+        List<Pedido> pedidos = pedidoService.findAllWithDetalle(); // Método que carga el detalle del pedido
         if (pedidos.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(pedidos);
         } else {
             return ResponseEntity.ok(pedidos);
         }
     }
+
 
     @PostMapping("/crearPedido")
     public ResponseEntity<String> crearPedidoConDetalle(@RequestBody Map<String, Object> requestBody) {
@@ -56,6 +57,8 @@ public class PedidoController {
 
         // Crear el pedido
         Pedido pedido = new Pedido();
+        
+        pedido.setClienteId(clienteGuardado.getId());
 
         // Establecer el estado del pedido como PENDING
         pedido.setEstado(EstadoPedido.PENDING);

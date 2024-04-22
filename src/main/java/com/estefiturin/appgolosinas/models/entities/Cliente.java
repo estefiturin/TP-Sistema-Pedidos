@@ -34,8 +34,6 @@ public class Cliente {
     private List<Pedido> pedidos;
 
 
-
-
     public Cliente() {
     }
 

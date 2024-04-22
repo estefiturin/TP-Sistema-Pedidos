@@ -132,6 +132,37 @@ public class ClienteController {
         }
     }
 
+    @GetMapping("/{clienteId}/pedidos")
+    public ResponseEntity<?> consultarEstadoPedidosCliente(@PathVariable Long clienteId) {
+        // Verificar si el cliente con el clienteId existe
+        Optional<Cliente> clienteOptional = clienteService.findById(clienteId);
+        if (clienteOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró ningún cliente con el ID proporcionado.");
+        }
+
+        // Obtener la lista de pedidos del cliente
+        List<Pedido> pedidos = pedidoService.findByClienteId(clienteId);
+
+        // Verificar si el cliente tiene pedidos
+        if (pedidos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("El cliente no tiene pedidos.");
+        }
+
+        // Crear una lista para almacenar los detalles de los pedidos con su estado
+        List<Map<String, Object>> detallesPedidos = new ArrayList<>();
+
+        // Iterar sobre cada pedido del cliente y obtener su estado
+        for (Pedido pedido : pedidos) {
+            Map<String, Object> detallePedido = new HashMap<>();
+            detallePedido.put("id", pedido.getId());
+            detallePedido.put("estado", pedido.getEstado().toString());
+            detallesPedidos.add(detallePedido);
+        }
+
+        return ResponseEntity.ok(detallesPedidos);
+    }
+
+
 
 
     private ResponseEntity<?> validation(BindingResult result) {
