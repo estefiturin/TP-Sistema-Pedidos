@@ -23,7 +23,7 @@ public class PedidoController {
         this.clienteService = clienteService;
     }
 
-    @GetMapping("/pedidos")
+    @GetMapping("/verPedidos")
     public ResponseEntity<List<Pedido>> obtenerTodosLosPedidos() {
         List<Pedido> pedidos = pedidoService.findAll();
         if (pedidos.isEmpty()) {
@@ -104,11 +104,15 @@ public class PedidoController {
         if (!pedidoService.existsById(pedidoId)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró ningún pedido con el ID proporcionado.");
         }
+        EstadoPedido estadoActual = pedidoService.obtenerEstadoPedido(pedidoId);
 
         // Cambiar el estado del pedido
         pedidoService.actualizarEstadoPedido(pedidoId, nuevoEstado);
 
-        return ResponseEntity.ok("Estado del pedido actualizado exitosamente.");
+         // Mensaje de respuesta
+        String mensaje = String.format("El estado del pedido con ID %d ha sido cambiado de %s a %s.", pedidoId, estadoActual, nuevoEstado);
+
+        return ResponseEntity.ok(mensaje);
     }
 
 

@@ -37,12 +37,15 @@ public class ClienteController {
     public List<Cliente> list() {
         List<Cliente> clientes = clienteService.findAll();
         for (Cliente cliente : clientes) {
-            List<Pedido> pedidos = pedidoService.findByClienteId(cliente.getId());
+
+
+            cliente.setPedidos(null);
+            /*List<Pedido> pedidos = pedidoService.findByClienteId(cliente.getId());
             for (Pedido pedido : pedidos) {
                 DetallePedido detallePedido = detallePedidoService.findByPedidoId(pedido.getId());
                 pedido.setDetalle(detallePedido);
             }
-            cliente.setPedidos(pedidos);
+            cliente.setPedidos(pedidos);*/
         }
         return clientes;
     }
@@ -110,6 +113,11 @@ public class ClienteController {
         pedido.setEstado(EstadoPedido.PENDING);
         pedido.setFechaCreacion(new Date());
         Pedido pedidoGuardado = pedidoService.save(pedido);
+
+        // Preparar la respuesta JSON
+        Map<String, Object> response = new HashMap<>();
+        response.put("cliente", clienteGuardado);
+        response.put("pedido", pedidoGuardado);
 
         // Verificar si la creación del pedido fue exitosa
         if (pedidoGuardado != null) {

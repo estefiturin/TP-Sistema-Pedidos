@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -65,5 +66,16 @@ public class PedidoService {
 
     public boolean existsById(Long pedidoId) {
         return pedidoRepository.existsById(pedidoId);
+    }
+
+    public EstadoPedido obtenerEstadoPedido(Long pedidoId) {
+        Optional<Pedido> pedidoOptional = pedidoRepository.findById(pedidoId);
+        if (pedidoOptional.isPresent()) {
+            Pedido pedido = pedidoOptional.get();
+            return pedido.getEstado();
+        } else {
+            // Manejar el caso en que el pedido no existe
+            throw new NoSuchElementException("No se encontró ningún pedido con el ID proporcionado: " + pedidoId);
+        }
     }
 }
